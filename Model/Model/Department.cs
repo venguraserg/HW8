@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HW8.Model
+namespace Model.Model
 {
     public class Department
     {
