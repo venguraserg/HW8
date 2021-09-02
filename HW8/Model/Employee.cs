@@ -4,16 +4,7 @@ namespace HW8.Model
 {
     public class Employee
     {
-        /*
-          Каждый сотрудник обладает как минимум следующими полями:
-
-          Идентификатор.
-          Фамилия.
-          Имя.
-          Возраст.
-          Департамент, в котором он работает.
-          Размер заработной платы.
-        */
+        
         public Guid Id { get; set; }
 
         public string Surname { get; set; }
@@ -25,6 +16,17 @@ namespace HW8.Model
         public Department Department { get; set; }
 
         public int Salary { get; set; } 
+
+        public Employee(string surname,string name, int age, Department department,int salary)
+        {
+            Id = Guid.NewGuid();
+            Surname = surname;
+            Name = name;
+            Age = age;
+            Department = department;
+            Salary = salary;
+
+        }
 
 
     }
