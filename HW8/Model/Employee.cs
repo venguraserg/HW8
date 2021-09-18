@@ -15,9 +15,9 @@ namespace HW8.Model
 
         public Department Department { get; set; }
 
-        public int Salary { get; set; } 
+        public double Salary { get; set; } 
 
-        public Employee(string surname,string name, int age, Department department,int salary)
+        public Employee(string surname,string name, int age, Department department,double salary)
         {
             Id = Guid.NewGuid();
             Surname = surname;
