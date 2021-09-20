@@ -6,11 +6,13 @@ namespace HW8.Model
     {
         public string Name { get; set; }
         public List<Department> DepartmentsList { get; set; }
+        public List<Employee> EmployeeList { get; set; }
 
         // конструктор для создания экземпляра класса компании
         public Company()
         {
             DepartmentsList = new List<Department>();
+            EmployeeList = new List<Employee>();
         }
 
         // метод добавления департамента
