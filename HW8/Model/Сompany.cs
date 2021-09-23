@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HW8.Model
 {
@@ -6,13 +8,16 @@ namespace HW8.Model
     {
         public string Name { get; set; }
         public List<Department> DepartmentsList { get; set; }
+        public List<Employee> EmployeeList { get; set; }
 
         // конструктор для создания экземпляра класса компании
         public Company()
         {
             DepartmentsList = new List<Department>();
+            EmployeeList = new List<Employee>();
+            
         }
-
+        #region Методы департамента
         // метод добавления департамента
         public void AddDepartment(Department department)
         {
@@ -30,5 +35,23 @@ namespace HW8.Model
         {
             DepartmentsList[index] = department;
         }
+
+        public string GetIdDepartment(Guid id)
+        {
+            return DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
+        }
+
+
+
+        #endregion
+
+        #region Методы Сотрудника
+        // метод добавления департамента
+        public void AddEmployee(Employee employee)
+        {
+            EmployeeList.Add(employee);
+        }
+        #endregion
+
     }
 }

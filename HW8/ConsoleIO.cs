@@ -13,7 +13,7 @@ namespace HW8
     /// <summary>
     /// Статический класс обеспечивающий ввод/вывод через консоль
     /// </summary>
-    public class ConsoleIO
+    public static class ConsoleIO
     {
 
         internal static bool Menu(ref Company company, string path)
@@ -30,13 +30,14 @@ namespace HW8
 
             switch (InputNumber())
             {
+                // меню департамента
                 case 1:
                     {
                         bool comeBack = false;
                         do
                         {
                             Console.Clear();
-                            Console.WriteLine("Меню Департамента:");
+                            Console.WriteLine("Меню \"Департамент:\"");
                             Console.WriteLine("1. Посмотреть список");
                             Console.WriteLine("2. Добавить департамент");
                             Console.WriteLine("3. Удалить департамент");
@@ -58,7 +59,19 @@ namespace HW8
                                     Console.Clear();
                                     Console.WriteLine("Добавление департамента: ");
                                     Console.Write("Введите название: ");
-                                    company.AddDepartment(new Department(Console.ReadLine()));
+                                    var tempName = Console.ReadLine();
+                                    if(company.DepartmentsList.Where(i => i.Name == tempName).ToList<Department>().Count == 0)
+                                    {
+                                        company.AddDepartment(new Department(tempName));
+                                        if (EnterYesNo("Департамент создан, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
+                                    }
+                                    else
+                                    { 
+                                        Console.WriteLine("Департамент с таким именем существует");
+                                    }
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
+
                                     break;
                                 //Удаление департамента
                                 case 3:
@@ -67,7 +80,14 @@ namespace HW8
                                     if (index >= 0)
                                     {
                                         company.RemoveDepartment(index);
+                                        if (EnterYesNo("Департамент удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
                                     }
+                                    else
+                                    {
+                                        Console.WriteLine("Не верный ввод. . .");
+                                    }
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
                                     break;
 
                                 // Редактировать департамент
@@ -79,7 +99,7 @@ namespace HW8
                                     {
                                         string newName = company.DepartmentsList[index].Name;
                                         DateTime newCreateDate = company.DepartmentsList[index].CreateDate;
-                                        List<Employee> newListEmployees = company.DepartmentsList[index].Employees;
+                                        
 
 
                                         if (EnterYesNo($"Название департамента - {company.DepartmentsList[index].Name}, желаете изменить? (Y/N)"))
@@ -94,14 +114,9 @@ namespace HW8
                                             newCreateDate = InputDate(DateTime.Parse("01.01.1900"), DateTime.Now);
                                         }
 
-                                        if (EnterYesNo($"Департамент имеет {company.DepartmentsList[index].Employees.Count()}, желаете удалить сотрудников? (Y/N)"))
-                                        {
+                                        company.EditDepartment(new Department(newName, newCreateDate), index);
+                                        if (EnterYesNo("Данные изменены, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
 
-                                            newListEmployees.Clear();
-                                        }
-
-                                        company.EditDepartment(new Department(newName, newCreateDate, newListEmployees), index);
-                                        
                                     }
 
                                     break;
@@ -118,13 +133,14 @@ namespace HW8
 
                         break;
                     }
+                // Меню сотрудников
                 case 2:
                     {
                         bool comeBack = false;
                         do
                         {
                             Console.Clear();
-                            Console.WriteLine("Меню Сотрудников:");
+                            Console.WriteLine("Меню \"Сотрудник\"");
                             Console.WriteLine("1. Посмотреть список ВСЕХ сотрудников");
                             Console.WriteLine("2. Добавить сотрудника");
                             Console.WriteLine("3. Удалить сотрудника");
@@ -133,11 +149,43 @@ namespace HW8
 
                             switch (InputNumber())
                             {
+                                //просмотр списка всех сотрудников
                                 case 1:
-
+                                    Console.Clear();
+                                    Console.WriteLine("Список всех сотрудников: ");
+                                    PrintAllEmployees(company);
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
                                     break;
 
+                                //добавление нового сотрудника
+                                case 2:
+                                    Console.Clear();
+                                    Console.WriteLine("Добавление сотрудника: ");
+                                    Console.Write("Введите фамилию: ");
+                                    string tempName = Console.ReadLine();
+                                    Console.Write("Введите имя: ");
+                                    string tempSurname = Console.ReadLine();
+                                    Console.Write("Введите возраст: ");
+                                    int tempAge = InputNumber();
+                                    Console.Write("Выберите департамент: ");
+                                    Guid tempId = ChoiseDepartment(company);
+                                    if (tempId == Guid.Empty) Console.WriteLine("Депатрамент не выбран, поле будет пустое");
+                                    Console.Write("Введите заработную плату: ");
+                                    if(!double.TryParse(Console.ReadLine(),out double tempSalary))
+                                    {
+                                        tempSalary = 0;
+                                        Console.WriteLine("Не верный ввод, зарплата будет установлена по уморчанию - 0, \nИзменить можно при редактировании");
+                                    }
+                                    
 
+                                    Employee tempEmployee = new Employee(tempSurname, tempName, tempAge, tempId, tempSalary);
+                                    company.AddEmployee(tempEmployee);
+
+                                    if (EnterYesNo("Сотрудник создан, сохранить в файл БД (Y/N)")) { SaveData(company, path); }
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
+                                    break;
 
 
 
@@ -158,6 +206,7 @@ namespace HW8
                         break;
                     }
                 case 3:
+                    if (EnterYesNo("Cохранить данные? (Y/N)")) { SaveData(company, path); }
                     SaveData(company, path);
                     quit = true;
                     break;
@@ -169,6 +218,26 @@ namespace HW8
 
             return !quit;
         }
+        /// <summary>
+        /// Выбор Департамента
+        /// </summary>
+        /// <param name="company"></param>
+        /// <returns></returns>
+        private static Guid ChoiseDepartment(Company company)
+        {
+            
+            Console.WriteLine("Выберите департамент: ");
+            PrintDepartment(company);
+            var number = InputNumber();
+            if(number <= company.DepartmentsList.Count)
+            {
+                return company.DepartmentsList[number - 1].IdDepartment;
+            }
+            return Guid.Empty;
+
+            
+        }
+
         /// <summary>
         /// Выбор департамента по индексу и имени
         /// </summary>
@@ -245,6 +314,28 @@ namespace HW8
             }
 
         }
+        /// <summary>
+        /// Вывод списка Всех сотрудников
+        /// </summary>
+        /// <param name="company"></param>
+        private static void PrintAllEmployees(Company company)
+        {
+            if (company.EmployeeList.Count == 0)
+            {
+                Console.WriteLine("Записей нет. . .");
+            }
+            else
+            {
+                Console.WriteLine("");
+                for (int i = 0; i < company.EmployeeList.Count; i++)
+                {
+                    Console.WriteLine($"#{i + 1} - {company.EmployeeList[i]} {company.GetIdDepartment(company.EmployeeList[i].IdDepartment)}");
+                }
+                Console.WriteLine("");
+            }
+
+        }
+
 
         /// <summary>
         /// инициализация приложения
@@ -280,6 +371,7 @@ namespace HW8
                 Console.WriteLine("Файл с данными пуст, начните заполнять структуру");
                 Console.Write("Введите наименование компании: ");
                 company.Name = Console.ReadLine();
+                company.AddDepartment(new Department());
 
             }
             else
@@ -378,11 +470,9 @@ namespace HW8
         /// <param name="company"></param>
         public static void SaveData(Company company, string path)
         {
-            if (EnterYesNo("Хотите сохранить данные (Y/N):"))
-            {
-                JsonSerialize(company, path);
-            }
-            Console.WriteLine("");
+            
+             JsonSerialize(company, path);
+            
         }
         /// <summary>
         /// Метод корректного ввода даты с проверкой Диапазона
