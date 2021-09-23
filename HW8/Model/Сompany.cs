@@ -51,6 +51,11 @@ namespace HW8.Model
         {
             EmployeeList.Add(employee);
         }
+
+        internal void RemoveEmployee(int index)
+        {
+            EmployeeList.RemoveAt(index); 
+        }
         #endregion
 
     }

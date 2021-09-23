@@ -186,8 +186,23 @@ namespace HW8
                                     Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
                                     Console.ReadKey(true);
                                     break;
-
-
+                                
+                                //Удаление сотрудника
+                                case 3:
+                                    Console.Clear();
+                                    int index = GetIndexEmployee(company);
+                                    if (index >= 0)
+                                    {
+                                        company.RemoveEmployee(index);
+                                        if (EnterYesNo("Cотрудник удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Не верный ввод. . .");
+                                    }
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
+                                    break;
 
 
 
@@ -271,6 +286,23 @@ namespace HW8
             }
 
             return index > company.DepartmentsList.Count ? -1: index;
+        }
+
+        /// <summary>
+        /// Выбор Сотрудника по индексу
+        /// </summary>
+        /// <param name="company"></param>
+        /// <returns></returns>
+        private static int GetIndexEmployee(Company company)
+        {
+            Console.WriteLine("Список департаментов: ");
+            PrintAllEmployees(company);
+            
+            
+            Console.WriteLine("Введите индекс");
+            int index = InputNumber() - 1;
+            
+            return index > company.EmployeeList.Count ? -1 : index;
         }
 
         /// <summary>
