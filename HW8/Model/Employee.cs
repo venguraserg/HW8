@@ -13,21 +13,25 @@ namespace HW8.Model
 
         public int Age { get; set; }
 
-        public Department Department { get; set; }
+        public Guid IdDepartment { get; set; }
 
         public double Salary { get; set; } 
 
-        public Employee(string surname,string name, int age, Department department,double salary)
+        public Employee(string surname,string name, int age, Guid idDepartment,double salary)
         {
             Id = Guid.NewGuid();
             Surname = surname;
             Name = name;
             Age = age;
-            Department = department;
+            IdDepartment = idDepartment;
             Salary = salary;
 
         }
 
-
+        
+        public override string ToString()
+        {
+            return $"{this.Surname} {this.Name} возраст {this.Age} лет";
+        }
     }
 }
