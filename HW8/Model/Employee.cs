@@ -13,17 +13,17 @@ namespace HW8.Model
 
         public int Age { get; set; }
 
-        public Guid IdDepartment { get; set; }
+        //public Guid IdDepartment { get; set; }
 
         public double Salary { get; set; } 
 
-        public Employee(string surname,string name, int age, Guid idDepartment,double salary)
+        public Employee(string surname,string name, int age, /*Guid idDepartment,*/ double salary)
         {
             Id = Guid.NewGuid();
             Surname = surname;
             Name = name;
             Age = age;
-            IdDepartment = idDepartment;
+            //IdDepartment = idDepartment;
             Salary = salary;
 
         }

@@ -168,9 +168,12 @@ namespace HW8
                                     string tempSurname = Console.ReadLine();
                                     Console.Write("Введите возраст: ");
                                     int tempAge = InputNumber();
+
+
+
                                     Console.Write("Выберите департамент: ");
-                                    Guid tempId = ChoiseDepartment(company);
-                                    if (tempId == Guid.Empty) Console.WriteLine("Депатрамент не выбран, поле будет пустое");
+                                    Department tempDepartment = ChoiseDepartment(company);
+                                    if (tempDepartment.Name == string.Empty) Console.WriteLine("Депатрамент не выбран, поле будет пустое");
                                     Console.Write("Введите заработную плату: ");
                                     if(!double.TryParse(Console.ReadLine(),out double tempSalary))
                                     {
@@ -179,8 +182,8 @@ namespace HW8
                                     }
                                     
 
-                                    Employee tempEmployee = new Employee(tempSurname, tempName, tempAge, tempId, tempSalary);
-                                    company.AddEmployee(tempEmployee);
+                                    Employee tempEmployee = new Employee(tempSurname, tempName, tempAge, /*tempId,*/ tempSalary);
+                                    company.AddEmployee(tempEmployee, tempDepartment);
 
                                     if (EnterYesNo("Сотрудник создан, сохранить в файл БД (Y/N)")) { SaveData(company, path); }
                                     Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
@@ -190,16 +193,16 @@ namespace HW8
                                 //Удаление сотрудника
                                 case 3:
                                     Console.Clear();
-                                    int index = GetIndexEmployee(company);
-                                    if (index >= 0)
-                                    {
-                                        company.RemoveEmployee(index);
-                                        if (EnterYesNo("Cотрудник удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Не верный ввод. . .");
-                                    }
+                                    //int index = GetIndexEmployee(company);
+                                    //if (index >= 0)
+                                    //{
+                                    //    company.RemoveEmployee(index);
+                                    //    if (EnterYesNo("Cотрудник удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
+                                    //}
+                                    //else
+                                    //{
+                                    //    Console.WriteLine("Не верный ввод. . .");
+                                    //}
                                     Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
                                     Console.ReadKey(true);
                                     break;
@@ -238,7 +241,7 @@ namespace HW8
         /// </summary>
         /// <param name="company"></param>
         /// <returns></returns>
-        private static Guid ChoiseDepartment(Company company)
+        private static Department ChoiseDepartment(Company company)
         {
             
             Console.WriteLine("Выберите департамент: ");
@@ -246,9 +249,9 @@ namespace HW8
             var number = InputNumber();
             if(number <= company.DepartmentsList.Count)
             {
-                return company.DepartmentsList[number - 1].IdDepartment;
+                return company.DepartmentsList[number - 1];
             }
-            return Guid.Empty;
+            return new Department();
 
             
         }
@@ -352,19 +355,19 @@ namespace HW8
         /// <param name="company"></param>
         private static void PrintAllEmployees(Company company)
         {
-            if (company.EmployeeList.Count == 0)
-            {
-                Console.WriteLine("Записей нет. . .");
-            }
-            else
-            {
-                Console.WriteLine("");
-                for (int i = 0; i < company.EmployeeList.Count; i++)
-                {
-                    Console.WriteLine($"#{i + 1} - {company.EmployeeList[i]} {company.GetIdDepartment(company.EmployeeList[i].IdDepartment)}");
-                }
-                Console.WriteLine("");
-            }
+            //if (company.EmployeeList.Count == 0)
+            //{
+            //    Console.WriteLine("Записей нет. . .");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("");
+            //    for (int i = 0; i < company.EmployeeList.Count; i++)
+            //    {
+            //        Console.WriteLine($"#{i + 1} - {company.EmployeeList[i]} {company.GetIdDepartment(company.EmployeeList[i].IdDepartment)}");
+            //    }
+            //    Console.WriteLine("");
+            //}
 
         }
 
