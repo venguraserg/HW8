@@ -17,6 +17,11 @@ namespace HW8.Model
 
         public double Salary { get; set; } 
 
+        public Employee()
+        {
+
+        }
+
         public Employee(string surname,string name, int age, Guid idDepartment,double salary)
         {
             Id = Guid.NewGuid();
@@ -28,10 +33,20 @@ namespace HW8.Model
 
         }
 
-        
+        public Employee(Guid id, string surname, string name, int age, Guid idDepartment, double salary)
+        {
+            Id = id;
+            Surname = surname;
+            Name = name;
+            Age = age;
+            IdDepartment = idDepartment;
+            Salary = salary;
+
+        }
+
         public override string ToString()
         {
-            return $"{this.Surname} {this.Name} возраст {this.Age} лет";
+            return $"{this.Surname} {this.Name} возраст {this.Age} лет, заработная плата {this.Salary}";
         }
     }
 }

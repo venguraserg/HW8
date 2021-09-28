@@ -36,7 +36,7 @@ namespace HW8.Model
             DepartmentsList[index] = department;
         }
 
-        public string GetIdDepartment(Guid id)
+        public string GetNameDepartment(Guid id)
         {
             return DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
         }
@@ -55,6 +55,16 @@ namespace HW8.Model
         internal void RemoveEmployee(int index)
         {
             EmployeeList.RemoveAt(index); 
+        }
+
+        /// <summary>
+        /// Метод редактирования сотрудника
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="index"></param>
+        public void EditEmployee(Employee employee, int index)
+        {
+            EmployeeList[index] = employee;
         }
         #endregion
 

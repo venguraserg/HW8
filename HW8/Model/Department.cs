@@ -13,19 +13,19 @@ namespace HW8.Model
         public Department()
         {
             IdDepartment = Guid.Empty;
-            Name = "";
+            Name = "Без департамента";
         }
 
-        public Department(string name)
+        public Department(Guid id, string name)
         {
-            IdDepartment = Guid.NewGuid();
+            IdDepartment = id;
             Name = name;
             CreateDate = DateTime.Now;            
         }
 
-        public Department(string name, DateTime createDate)
+        public Department(Guid id, string name, DateTime createDate)
         {
-            IdDepartment = Guid.NewGuid();
+            IdDepartment = id;
             Name = name;
             CreateDate = createDate;
         }

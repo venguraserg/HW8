@@ -62,7 +62,12 @@ namespace HW8
                                     var tempName = Console.ReadLine();
                                     if(company.DepartmentsList.Where(i => i.Name == tempName).ToList<Department>().Count == 0)
                                     {
-                                        company.AddDepartment(new Department(tempName));
+                                        Guid tempId = Guid.NewGuid();
+                                        while (company.DepartmentsList.Where(e => e.IdDepartment == tempId).ToList<Department>().Count!=0)
+                                        {
+                                            tempId = Guid.NewGuid();
+                                        }
+                                        company.AddDepartment(new Department(tempId,tempName));
                                         if (EnterYesNo("Департамент создан, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
                                     }
                                     else
@@ -97,6 +102,7 @@ namespace HW8
 
                                     if (index >= 0)
                                     {
+                                        Guid id = company.DepartmentsList[index].IdDepartment;
                                         string newName = company.DepartmentsList[index].Name;
                                         DateTime newCreateDate = company.DepartmentsList[index].CreateDate;
                                         
@@ -114,7 +120,7 @@ namespace HW8
                                             newCreateDate = InputDate(DateTime.Parse("01.01.1900"), DateTime.Now);
                                         }
 
-                                        company.EditDepartment(new Department(newName, newCreateDate), index);
+                                        company.EditDepartment(new Department(id, newName, newCreateDate), index);
                                         if (EnterYesNo("Данные изменены, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
 
                                     }
@@ -170,7 +176,7 @@ namespace HW8
                                     int tempAge = InputNumber();
                                     Console.Write("Выберите департамент: ");
                                     Guid tempId = ChoiseDepartment(company);
-                                    if (tempId == Guid.Empty) Console.WriteLine("Депатрамент не выбран, поле будет пустое");
+                                    if (tempId == Guid.Empty) Console.WriteLine("Депатрамент не выбран, поле будет \"Без департамента\"");
                                     Console.Write("Введите заработную плату: ");
                                     if(!double.TryParse(Console.ReadLine(),out double tempSalary))
                                     {
@@ -191,7 +197,7 @@ namespace HW8
                                 case 3:
                                     Console.Clear();
                                     int index = GetIndexEmployee(company);
-                                    if (index >= 0)
+                                    if (index >= 0 && index <= company.EmployeeList.Count - 1)
                                     {
                                         company.RemoveEmployee(index);
                                         if (EnterYesNo("Cотрудник удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
@@ -204,11 +210,75 @@ namespace HW8
                                     Console.ReadKey(true);
                                     break;
 
+                                //Редактирование сотрудника
+                                case 4:
+                                    Console.Clear();
+                                    index = GetIndexEmployee(company);
+
+                                    if (index >= 0)
+                                    {
+                                        Guid newId = company.EmployeeList[index].Id;
+                                        string newName = company.EmployeeList[index].Name;
+                                        if (EnterYesNo($"Имя сотрудника - {company.EmployeeList[index].Name}, желаете изменить? (Y/N)"))
+                                        {
+                                            Console.Write("Введите новое имя: ");
+                                            newName = Console.ReadLine();
+                                        }
+
+                                        string newSurname = company.EmployeeList[index].Surname;
+                                        if (EnterYesNo($"Фамилия сотрудника - {company.EmployeeList[index].Surname}, желаете изменить? (Y/N)"))
+                                        {
+                                            Console.Write("Введите новую фамилию: ");
+                                            newSurname = Console.ReadLine();
+                                        }
+
+                                        int newAge = company.EmployeeList[index].Age;
+                                        if (EnterYesNo($"Возраст сотрудника - {company.EmployeeList[index].Age}, желаете изменить? (Y/N)"))
+                                        {
+                                            Console.Write("Введите новый возраст: ");
+                                            newAge = InputNumber();
+                                        }
+                                        
+                                        Guid newIdDep = company.EmployeeList[index].IdDepartment;
+                                        if (EnterYesNo($"Текущий департамент - {company.GetNameDepartment(newIdDep)}, желаете изменить? (Y/N)"))
+                                        {
+                                            Console.Write("Выберите новый департамент: ");
+                                            do
+                                            {
+                                                newIdDep = ChoiseDepartment(company);
+                                                if (newIdDep == Guid.Empty)
+                                                {
+                                                    Console.WriteLine("Не верный ввод, повторите. . .");
+                                                }
+
+                                            } while (newIdDep == Guid.Empty);
+
+                                        }
+
+                                        double newSalary = company.EmployeeList[index].Salary;
+                                        if (EnterYesNo($"Зарплата сотрудника - {company.EmployeeList[index].Salary}, желаете изменить? (Y/N)"))
+                                        {
+                                            Console.Write("Введите новую зарплату: ");
+                                            bool correctParse = false;
+                                            do
+                                            {
+                                                correctParse = double.TryParse(Console.ReadLine(), out newSalary);
+                                                if (correctParse == false)
+                                                {
+                                                    Console.WriteLine("Не верный ввод, повторите. . .");
+                                                }
+
+                                            } while (!correctParse);
+
+                                        }
+
+                                        company.EditEmployee(new Employee(newId, newSurname, newName, newAge, newIdDep, newSalary), index);
+                                        if (EnterYesNo("Данные изменены, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
+
+                                    }
 
 
-
-
-
+                                    break;
                                 case 5:
                                     comeBack = true;
                                     break;
@@ -244,7 +314,7 @@ namespace HW8
             Console.WriteLine("Выберите департамент: ");
             PrintDepartment(company);
             var number = InputNumber();
-            if(number <= company.DepartmentsList.Count)
+            if(number <= company.DepartmentsList.Count || number<1)
             {
                 return company.DepartmentsList[number - 1].IdDepartment;
             }
@@ -361,7 +431,7 @@ namespace HW8
                 Console.WriteLine("");
                 for (int i = 0; i < company.EmployeeList.Count; i++)
                 {
-                    Console.WriteLine($"#{i + 1} - {company.EmployeeList[i]} {company.GetIdDepartment(company.EmployeeList[i].IdDepartment)}");
+                    Console.WriteLine($"#{i + 1} - {company.EmployeeList[i]} департамент - {company.GetNameDepartment(company.EmployeeList[i].IdDepartment)}");
                 }
                 Console.WriteLine("");
             }
