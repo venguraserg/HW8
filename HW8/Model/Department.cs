@@ -5,7 +5,7 @@ namespace HW8.Model
 {
     public class Department
     {
-        public Guid IdDepartment { get; set; }
+        //public Guid IdDepartment { get; set; }
         public string Name { get; set; }
         public DateTime CreateDate { get; set; }
         

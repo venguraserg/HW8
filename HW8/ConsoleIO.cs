@@ -174,6 +174,9 @@ namespace HW8
                                     string tempSurname = Console.ReadLine();
                                     Console.Write("Введите возраст: ");
                                     int tempAge = InputNumber();
+
+
+
                                     Console.Write("Выберите департамент: ");
                                     Guid tempId = ChoiseDepartment(company);
                                     if (tempId == Guid.Empty) Console.WriteLine("Депатрамент не выбран, поле будет \"Без департамента\"");
@@ -185,8 +188,8 @@ namespace HW8
                                     }
                                     
 
-                                    Employee tempEmployee = new Employee(tempSurname, tempName, tempAge, tempId, tempSalary);
-                                    company.AddEmployee(tempEmployee);
+                                    Employee tempEmployee = new Employee(tempSurname, tempName, tempAge, /*tempId,*/ tempSalary);
+                                    company.AddEmployee(tempEmployee, tempDepartment);
 
                                     if (EnterYesNo("Сотрудник создан, сохранить в файл БД (Y/N)")) { SaveData(company, path); }
                                     Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
@@ -308,7 +311,7 @@ namespace HW8
         /// </summary>
         /// <param name="company"></param>
         /// <returns></returns>
-        private static Guid ChoiseDepartment(Company company)
+        private static Department ChoiseDepartment(Company company)
         {
             
             Console.WriteLine("Выберите департамент: ");
@@ -316,9 +319,9 @@ namespace HW8
             var number = InputNumber();
             if(number <= company.DepartmentsList.Count || number<1)
             {
-                return company.DepartmentsList[number - 1].IdDepartment;
+                return company.DepartmentsList[number - 1];
             }
-            return Guid.Empty;
+            return new Department();
 
             
         }

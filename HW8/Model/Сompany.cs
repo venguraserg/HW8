@@ -8,29 +8,42 @@ namespace HW8.Model
     {
         public string Name { get; set; }
         public List<Department> DepartmentsList { get; set; }
-        public List<Employee> EmployeeList { get; set; }
+        //public List<Employee> EmployeeList { get; set; }
+        public Dictionary<Employee,Department> EmployeeList { get; set; }
 
-        // конструктор для создания экземпляра класса компании
+        /// <summary>
+        /// конструктор для создания экземпляра класса компании
+        /// </summary>
         public Company()
         {
             DepartmentsList = new List<Department>();
-            EmployeeList = new List<Employee>();
+            EmployeeList = new Dictionary<Employee, Department>();
             
         }
         #region Методы департамента
-        // метод добавления департамента
+
+        /// <summary>
+        /// метод добавления департамента
+        /// </summary>
+        /// <param name="department"></param>
         public void AddDepartment(Department department)
         {
             DepartmentsList.Add(department);
         }
-
-        // метод удаления департамента
+        /// <summary>
+        /// метод удаления департамента
+        /// </summary>
+        /// <param name="index"></param>
         public void RemoveDepartment(int index)
         {
             DepartmentsList.RemoveAt(index);
         }
 
-        //Метод редактирования департамента
+        /// <summary>
+        /// Метод редактирования департамента
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="index"></param>
         public void EditDepartment(Department department, int index)
         {
             DepartmentsList[index] = department;
@@ -38,7 +51,7 @@ namespace HW8.Model
 
         public string GetNameDepartment(Guid id)
         {
-            return DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
+            return "";// DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
         }
 
 
@@ -46,15 +59,24 @@ namespace HW8.Model
         #endregion
 
         #region Методы Сотрудника
-        // метод добавления департамента
-        public void AddEmployee(Employee employee)
+        /// <summary>
+        /// метод добавления сотрудника
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <param name="department"></param>
+        public void AddEmployee(Employee employee, Department department)
         {
-            EmployeeList.Add(employee);
+            EmployeeList.Add(employee, department);
+            
         }
 
-        internal void RemoveEmployee(int index)
+        /// <summary>
+        /// Метод удаления сотрудника
+        /// </summary>
+        /// <param name="employee"></param>
+        internal void RemoveEmployee(Employee employee)
         {
-            EmployeeList.RemoveAt(index); 
+            EmployeeList.Remove(employee);
         }
 
         /// <summary>
