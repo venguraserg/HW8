@@ -265,7 +265,7 @@ namespace HW8
                                                 correctParse = double.TryParse(Console.ReadLine(), out newSalary);
                                                 if (correctParse == false)
                                                 {
-                                                    Console.WriteLine("Не верный ввод, повторите. . .");
+                                                    Console.WriteLine("Не верный ввод, повторите. . . ");
                                                 }
 
                                             } while (!correctParse);
