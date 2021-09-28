@@ -13,7 +13,7 @@ namespace HW8.Model
 
         public int Age { get; set; }
 
-        //public Guid IdDepartment { get; set; }
+        public Guid IdDepartment { get; set; }
 
         public double Salary { get; set; } 
 
@@ -28,7 +28,7 @@ namespace HW8.Model
             Surname = surname;
             Name = name;
             Age = age;
-            //IdDepartment = idDepartment;
+            IdDepartment = idDepartment;
             Salary = salary;
 
         }
