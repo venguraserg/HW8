@@ -10,7 +10,10 @@ namespace HW8.Model
         public List<Department> DepartmentsList { get; set; }
         public List<Employee> EmployeeList { get; set; }
 
-        // конструктор для создания экземпляра класса компании
+        
+        /// <summary>
+        /// конструктор для создания экземпляра класса компании
+        /// </summary>
         public Company()
         {
             DepartmentsList = new List<Department>();
@@ -18,19 +21,32 @@ namespace HW8.Model
             
         }
         #region Методы департамента
-        // метод добавления департамента
+        
+        /// <summary>
+        /// метод добавления департамента
+        /// </summary>
+        /// <param name="department"></param>
         public void AddDepartment(Department department)
         {
             DepartmentsList.Add(department);
         }
 
-        // метод удаления департамента
+        
+        /// <summary>
+        /// метод удаления департамента
+        /// </summary>
+        /// <param name="index"></param>
         public void RemoveDepartment(int index)
         {
             DepartmentsList.RemoveAt(index);
         }
 
-        //Метод редактирования департамента
+       
+        /// <summary>
+        /// Метод редактирования департамента
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="index"></param>
         public void EditDepartment(Department department, int index)
         {
             DepartmentsList[index] = department;
@@ -46,12 +62,19 @@ namespace HW8.Model
         #endregion
 
         #region Методы Сотрудника
-        // метод добавления департамента
+        
+        /// <summary>
+        /// метод добавления департамента
+        /// </summary>
+        /// <param name="employee"></param>
         public void AddEmployee(Employee employee)
         {
             EmployeeList.Add(employee);
         }
-
+        /// <summary>
+        /// Метод удаления сотрудника
+        /// </summary>
+        /// <param name="index"></param>
         internal void RemoveEmployee(int index)
         {
             EmployeeList.RemoveAt(index); 
