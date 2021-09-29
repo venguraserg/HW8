@@ -26,9 +26,8 @@ namespace HW8
             Console.WriteLine("Меню приложения:");
             Console.WriteLine("1. Департаменты");
             Console.WriteLine("2. Сотрудники");
-            Console.WriteLine("3. Работа со структурой предприятия");
-
-            Console.WriteLine("4. Выход");
+            
+            Console.WriteLine("3. Выход");
 
             switch (InputNumber())
             {
@@ -40,24 +39,88 @@ namespace HW8
                         {
                             Console.Clear();
                             Console.WriteLine("Меню \"Департамент:\"");
-                            Console.WriteLine("1. Посмотреть список");
-                            Console.WriteLine("2. Добавить департамент");
-                            Console.WriteLine("3. Удалить департамент");
-                            Console.WriteLine("4. Редактировать департамент");
-                            Console.WriteLine("5. Назад");
+                            Console.WriteLine("1. Посмотреть список департаментов");
+                            Console.WriteLine("2. Просмотр конкретного департамента");
+                            Console.WriteLine("3. Добавить департамент");
+                            Console.WriteLine("4. Удалить департамент");
+                            Console.WriteLine("5. Редактировать департамент");
+
+                            Console.WriteLine("6. Назад");
 
                             switch (InputNumber())
                             {
                                 //просмотр департаментов
                                 case 1:
-                                    Console.Clear();
-                                    Console.WriteLine("Список департаментов: ");
-                                    PrintDepartment(company);
-                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
-                                    Console.ReadKey(true);
-                                    break;
-                                //Добавление департаментов
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Список департаментов: ");
+                                        PrintDepartment(company);
+                                        Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                        Console.ReadKey(true);
+                                        break;
+                                    }
+                                //просмотр конкретного департамента
                                 case 2:
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Выберите департамент, который хотите просмотреть:");
+                                        var indexDepartament = GetIndexDepartment(company);
+                                        
+                                        if (indexDepartament >= 0)
+                                        {
+                                            var idDepartment = company.GetIdDepartmentByIndex(indexDepartament);
+                                            var tempEmploees = company.GetEmployeesFromDepartment(indexDepartament);
+                                            Console.WriteLine("Отсортировать список по:");
+                                            Console.WriteLine("0 - без сортировки");
+                                            Console.WriteLine("1 - по фамилии");
+                                            Console.WriteLine("2 - по имени");
+                                            Console.WriteLine("3 - по возрасту");
+                                            Console.WriteLine("4 - по зарплате");
+                                            bool correctInput = false;
+                                            do
+                                            {//сортировка
+                                                switch (InputNumber())
+                                                {
+                                                    case 0:
+                                                        correctInput = true;
+                                                        break;
+                                                    case 1:
+                                                        correctInput = true;
+                                                        tempEmploees = tempEmploees.OrderBy(i => i.Surname).ToList<Employee>();
+                                                        break;
+                                                    case 2:
+                                                        correctInput = true;
+                                                        tempEmploees = tempEmploees.OrderBy(i => i.Name).ToList<Employee>();
+                                                        break;
+                                                    case 3:
+                                                        correctInput = true;
+                                                        tempEmploees = tempEmploees.OrderBy(i => i.Age).ToList<Employee>();
+                                                        break;
+                                                    case 4:
+                                                        correctInput = true;
+                                                        tempEmploees = tempEmploees.OrderBy(i => i.Salary).ToList<Employee>();
+                                                        break;
+                                                    default:
+                                                        correctInput = false;
+                                                        Console.WriteLine("Не верный ввод. . .");
+                                                        break;
+                                                }
+                                            } while (!correctInput);
+
+                                            PrintEmployeeList(tempEmploees, company.GetNameDepartment(idDepartment));
+                                            
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Не верный ввод. . .");
+                                        }
+
+                                        Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                        Console.ReadKey(true);
+                                        break;
+                                    }
+                                //Добавление департаментов
+                                case 3:
                                     Console.Clear();
                                     Console.WriteLine("Добавление департамента: ");
                                     Console.Write("Введите название: ");
@@ -81,12 +144,14 @@ namespace HW8
 
                                     break;
                                 //Удаление департамента
-                                case 3:
+                                case 4:
                                     Console.Clear();
                                     int index = GetIndexDepartment(company);
                                     if (index >= 0)
                                     {
+                                        
                                         company.RemoveDepartment(index);
+                                        
                                         if (EnterYesNo("Департамент удален, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
                                     }
                                     else
@@ -98,7 +163,7 @@ namespace HW8
                                     break;
 
                                 // Редактировать департамент
-                                case 4:
+                                case 5:
                                     Console.Clear();
                                     index = GetIndexDepartment(company);
 
@@ -128,7 +193,7 @@ namespace HW8
                                     }
 
                                     break;
-                                case 5:
+                                case 6:
                                     comeBack = true;
                                     break;
 
@@ -298,31 +363,8 @@ namespace HW8
                         } while (!comeBack);
                         break;
                     }
-                // Работа со структурой  /просмотры и сортировки/
+                
                 case 3:
-                    {
-                        bool comeBack = false;
-                        do
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Меню \"Департамент:\"");
-                            Console.WriteLine("1. Посмотреть список");
-                            Console.WriteLine("2. Добавить департамент");
-                            Console.WriteLine("3. Удалить департамент");
-                            Console.WriteLine("4. Редактировать департамент");
-                            Console.WriteLine("5. Назад");
-
-                            switch (InputNumber())
-                            {
-
-                            }
-                        } while (!comeBack);
-
-
-
-                    break;
-                    }
-                case 4:
                     if (EnterYesNo("Cохранить данные? (Y/N)")) { SaveData(company, path); }
                     SaveData(company, path);
                     quit = true;
@@ -470,6 +512,28 @@ namespace HW8
 
         }
 
+        /// <summary>
+        /// Вывод списка сотрудников
+        /// </summary>
+        /// <param name="employees"></param>
+        private static void PrintEmployeeList(List<Employee> employees, string name)
+        {
+            Console.WriteLine($"Департамент - {name}");
+            if (employees.Count == 0)
+            {
+                Console.WriteLine("Записей нет. . .");
+            }
+            else
+            {
+                Console.WriteLine("");
+                for (int i = 0; i < employees.Count; i++)
+                {
+                    Console.WriteLine($"#{i + 1} - {employees[i]} ");
+                }
+                Console.WriteLine("");
+            }
+
+        }
 
         /// <summary>
         /// инициализация приложения

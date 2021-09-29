@@ -38,6 +38,16 @@ namespace HW8.Model
         /// <param name="index"></param>
         public void RemoveDepartment(int index)
         {
+            //перемещение пользователей из удаляемого департамента в категорию "без департамента"
+            var idRemovedDepartment = GetIdDepartmentByIndex(index);
+            for (int i = 0; i < EmployeeList.Count; i++)
+            {
+                if (EmployeeList[i].IdDepartment == idRemovedDepartment)
+                {
+                    EmployeeList[i].IdDepartment = Guid.Empty;
+                    DepartmentsList[GetDepartmentIndexByDepartmentList(Guid.Empty)].Count++;
+                }
+            }
             DepartmentsList.RemoveAt(index);
         }
 
@@ -58,7 +68,30 @@ namespace HW8.Model
         /// <returns></returns>
         public string GetNameDepartment(Guid id)
         {
-            return DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
+            return DepartmentsList.Single(i => i.IdDepartment == id).Name; 
+        }
+
+        /// <summary>
+        /// Метод получения индекса департамента из списка
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private int GetDepartmentIndexByDepartmentList(Guid id)
+        {
+            for (int i = 0; i < DepartmentsList.Count; i++)
+            {
+                if (DepartmentsList[i].IdDepartment == id) return i;
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Получение ID департамента по индексу
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Guid GetIdDepartmentByIndex(int index)
+        {
+            return DepartmentsList[index].IdDepartment;
         }
 
 
@@ -66,7 +99,7 @@ namespace HW8.Model
         #endregion
 
         #region Методы Сотрудника
-        
+
         /// <summary>
         /// метод добавления департамента
         /// </summary>
@@ -115,17 +148,21 @@ namespace HW8.Model
         }
         #endregion
         /// <summary>
-        /// Метод получения индекса департамента из списка
+        /// Получения списка конкретного департамента
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        private int GetDepartmentIndexByDepartmentList(Guid id)
+        public List<Employee> GetEmployeesFromDepartment(int index)
         {
-            for (int i = 0; i < DepartmentsList.Count; i++)
+            List<Employee> employees = new List<Employee>();
+            var idDepartment = GetIdDepartmentByIndex(index);
+            foreach (var item in EmployeeList)
             {
-                if (DepartmentsList[i].IdDepartment == id) return i;
+                if (item.IdDepartment == idDepartment) employees.Add(item);
             }
-            return 0;
+            return employees;
         }
+
+
     }
 }
