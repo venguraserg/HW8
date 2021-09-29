@@ -74,10 +74,10 @@ namespace HW8.Model
         public void AddEmployee(Employee employee)
         {
             EmployeeList.Add(employee);
-            if(employee.IdDepartment != Guid.Empty)
-            {
+            //if(employee.IdDepartment != Guid.Empty)
+            //{
                 DepartmentsList[GetDepartmentIndexByDepartmentList(employee.IdDepartment)].Count++;
-            }
+           // }
         }
         /// <summary>
         /// Метод удаления сотрудника
@@ -85,10 +85,10 @@ namespace HW8.Model
         /// <param name="index"></param>
         internal void RemoveEmployee(int index)
         {
-            if (EmployeeList[index].IdDepartment != Guid.Empty)
-            {
+            //if (EmployeeList[index].IdDepartment != Guid.Empty)
+            //{
                 DepartmentsList[GetDepartmentIndexByDepartmentList(EmployeeList[index].IdDepartment)].Count--;
-            }
+            //}
             EmployeeList.RemoveAt(index);
             
         }
@@ -100,9 +100,25 @@ namespace HW8.Model
         /// <param name="index"></param>
         public void EditEmployee(Employee employee, int index)
         {
+            //if (EmployeeList[index].IdDepartment != Guid.Empty)
+            //{
+                DepartmentsList[GetDepartmentIndexByDepartmentList(EmployeeList[index].IdDepartment)].Count--;
+           // }
+
             EmployeeList[index] = employee;
+
+            //if (employee.IdDepartment != Guid.Empty)
+            //{
+                DepartmentsList[GetDepartmentIndexByDepartmentList(employee.IdDepartment)].Count++;
+            //}
+
         }
         #endregion
+        /// <summary>
+        /// Метод получения индекса департамента из списка
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private int GetDepartmentIndexByDepartmentList(Guid id)
         {
             for (int i = 0; i < DepartmentsList.Count; i++)
