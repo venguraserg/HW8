@@ -8,6 +8,7 @@ namespace HW8.Model
         public Guid IdDepartment { get; set; }
         public string Name { get; set; }
         public DateTime CreateDate { get; set; }
+        public int Count { get; set; }
         
         /// <summary>
         /// Конструктор №1
@@ -47,7 +48,7 @@ namespace HW8.Model
         /// <returns></returns>
         public override string ToString()
         {
-            return $"{this.Name} создан {this.CreateDate.ToShortDateString()}";
+            return $"{this.Name} создан {this.CreateDate.ToShortDateString()} количество сотрудников {this.Count}";
         }
 
         

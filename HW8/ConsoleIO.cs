@@ -278,6 +278,12 @@ namespace HW8
                                         if (EnterYesNo("Данные изменены, сохранить изменения в файл БД (Y/N)")) { SaveData(company, path); }
 
                                     }
+                                    else
+                                    {
+                                        Console.WriteLine("Не верный ввод. . .");
+                                    }
+                                    Console.WriteLine("Для продолжения нажмите любую клавишу. . .");
+                                    Console.ReadKey(true);
 
 
                                     break;
@@ -292,7 +298,7 @@ namespace HW8
                         } while (!comeBack);
                         break;
                     }
-
+                // Работа со структурой  /просмотры и сортировки/
                 case 3:
 
 
@@ -365,7 +371,7 @@ namespace HW8
                 Console.ReadKey(true);
             }
 
-            return index > company.DepartmentsList.Count ? -1: index;
+            return index > company.DepartmentsList.Count - 1 ? -1: index;
         }
 
         /// <summary>
@@ -382,7 +388,7 @@ namespace HW8
             Console.WriteLine("Введите индекс");
             int index = InputNumber() - 1;
             
-            return index > company.EmployeeList.Count ? -1 : index;
+            return index > company.EmployeeList.Count - 1 ? -1 : index;
         }
 
         /// <summary>

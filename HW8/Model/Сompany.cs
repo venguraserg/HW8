@@ -74,6 +74,10 @@ namespace HW8.Model
         public void AddEmployee(Employee employee)
         {
             EmployeeList.Add(employee);
+            if(employee.IdDepartment != Guid.Empty)
+            {
+                DepartmentsList[GetDepartmentIndexByDepartmentList(employee.IdDepartment)].Count++;
+            }
         }
         /// <summary>
         /// Метод удаления сотрудника
@@ -81,7 +85,12 @@ namespace HW8.Model
         /// <param name="index"></param>
         internal void RemoveEmployee(int index)
         {
-            EmployeeList.RemoveAt(index); 
+            if (EmployeeList[index].IdDepartment != Guid.Empty)
+            {
+                DepartmentsList[GetDepartmentIndexByDepartmentList(EmployeeList[index].IdDepartment)].Count--;
+            }
+            EmployeeList.RemoveAt(index);
+            
         }
 
         /// <summary>
@@ -94,6 +103,13 @@ namespace HW8.Model
             EmployeeList[index] = employee;
         }
         #endregion
-
+        private int GetDepartmentIndexByDepartmentList(Guid id)
+        {
+            for (int i = 0; i < DepartmentsList.Count; i++)
+            {
+                if (DepartmentsList[i].IdDepartment == id) return i;
+            }
+            return 0;
+        }
     }
 }
