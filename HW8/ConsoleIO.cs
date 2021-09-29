@@ -300,12 +300,28 @@ namespace HW8
                     }
                 // Работа со структурой  /просмотры и сортировки/
                 case 3:
+                    {
+                        bool comeBack = false;
+                        do
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Меню \"Департамент:\"");
+                            Console.WriteLine("1. Посмотреть список");
+                            Console.WriteLine("2. Добавить департамент");
+                            Console.WriteLine("3. Удалить департамент");
+                            Console.WriteLine("4. Редактировать департамент");
+                            Console.WriteLine("5. Назад");
 
+                            switch (InputNumber())
+                            {
+
+                            }
+                        } while (!comeBack);
 
 
 
                     break;
-                
+                    }
                 case 4:
                     if (EnterYesNo("Cохранить данные? (Y/N)")) { SaveData(company, path); }
                     SaveData(company, path);
