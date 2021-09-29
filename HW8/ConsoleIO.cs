@@ -26,7 +26,9 @@ namespace HW8
             Console.WriteLine("Меню приложения:");
             Console.WriteLine("1. Департаменты");
             Console.WriteLine("2. Сотрудники");
-            Console.WriteLine("3. Выход");
+            Console.WriteLine("3. Работа со структурой предприятия");
+
+            Console.WriteLine("4. Выход");
 
             switch (InputNumber())
             {
@@ -290,7 +292,15 @@ namespace HW8
                         } while (!comeBack);
                         break;
                     }
+
                 case 3:
+
+
+
+
+                    break;
+                
+                case 4:
                     if (EnterYesNo("Cохранить данные? (Y/N)")) { SaveData(company, path); }
                     SaveData(company, path);
                     quit = true;

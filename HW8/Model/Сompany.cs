@@ -51,7 +51,11 @@ namespace HW8.Model
         {
             DepartmentsList[index] = department;
         }
-
+        /// <summary>
+        /// Метод получения имени департамента
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string GetNameDepartment(Guid id)
         {
             return DepartmentsList.Single(i => i.IdDepartment == id).Name; ;
